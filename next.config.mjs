@@ -7,4 +7,14 @@ const withSerwist = withSerwistInit({
 
 export default withSerwist({
   // Next.js config options
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "dvbw6k2veuonh.cloudfront.net",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 });
