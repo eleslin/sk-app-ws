@@ -2,6 +2,7 @@ import React from 'react'
 import supabase from '../utils/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
+import { IoLogOutOutline } from 'react-icons/io5';
 
 enum RoutineCategory {
     guias = 'guias',
@@ -82,8 +83,9 @@ export default async function RoutinesPage() {
 
     return <div className='flex flex-col'>
         {/* Header */}
-        <div className='bg-gray-800 py-5 text-center mb-5'>
-            <p className='font-bold text-2xl'>SK Workout</p>
+        <div className='bg-gray-800 py-5 mb-5 shadow-lg flex justify-between items-center px-6'>
+            <p className='logo text-[7rem]'>SK</p>
+            <IoLogOutOutline color='#fff' size='40px' />
         </div>
 
         {/* List of routines */}
