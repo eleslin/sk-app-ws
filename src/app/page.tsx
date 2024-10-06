@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { IoChevronForward } from "react-icons/io5";
+import { createClient } from "./utils/supabase/server";
 
 export default async function Home() {
+  const supabase = createClient()
+
+  const { data } = await supabase.auth.getUser()
 
 
   return (
@@ -11,7 +15,7 @@ export default async function Home() {
         <p className='logo'>SK</p>
 
         {/* Login */}
-        <Link href={'/login'} className="bg-white rounded-md p-2">
+        <Link href={`${data?.user ? '/routines' : '/login'}`} className="bg-white rounded-md p-2">
           <IoChevronForward size='30px' className="text-gray-800" />
         </Link>
       </main>

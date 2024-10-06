@@ -1,19 +1,23 @@
 import React from 'react'
-import supabase from '../utils/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
 import { IoLogOutOutline } from 'react-icons/io5';
+import { createClient } from '../utils/supabase/server';
+import { redirect } from 'next/navigation';
+import RoutinesCarousel from '../components/RoutinesCarousel';
+
 
 enum RoutineCategory {
     guias = 'guias',
-    retos = 'retos'
+    retos = 'retos',
+    otros = 'otros'
 }
 
 interface UserRoutine {
     id: number,
-    user_id: number,
-    routine_category: number,
+    user_id: string,
     routine_id: string
+    total_exercises: number;
 }
 
 interface Routine {
@@ -25,7 +29,6 @@ interface Routine {
     price: number;
     total_days: number;
     completed_days: number;
-    total_exercises: number;
     total_sets: number;
     muscles: string;
     instructions: string;
@@ -33,9 +36,17 @@ interface Routine {
     goal: string;
     muscle: string;
     level: string;
+    routine_category: number
 }
 
 export default async function RoutinesPage() {
+    const supabase = createClient()
+
+    const { data, error } = await supabase.auth.getUser()
+    if (error || !data?.user) {
+        redirect('/login')
+    }
+
     const userRoutinesCategorized: Map<RoutineCategory, Array<{ userRoutine: UserRoutine, routine: Routine }>> = new Map();
 
     try {
@@ -52,7 +63,7 @@ export default async function RoutinesPage() {
         const routinesData: Routine[] = routines.data ?? [];
 
         // Filter userRoutines by user_id
-        const individualUserRoutines = userRoutinesData.filter((userRoutine) => userRoutine.user_id === 1)
+        const individualUserRoutines = userRoutinesData.filter((userRoutine) => userRoutine.user_id === data.user.id)
 
         // Group routines ids according to their catgory
 
@@ -66,7 +77,7 @@ export default async function RoutinesPage() {
                 continue;
             }
 
-            const category: RoutineCategory = Object.values(RoutineCategory)[userRoutine.routine_category] as RoutineCategory
+            const category: RoutineCategory = Object.values(RoutineCategory)[routine.routine_category] as RoutineCategory
 
             if (userRoutinesCategorized.has(category)) {
                 const routinesList = userRoutinesCategorized.get(category)
@@ -88,13 +99,14 @@ export default async function RoutinesPage() {
             <IoLogOutOutline color='#fff' size='40px' />
         </div>
 
+
         {/* List of routines */}
         <div className='flex flex-col gap-4 px-8 relative'>
             {Array.from(userRoutinesCategorized).map(([key, value]) => (
                 <div key={key}>
                     <h1>{key.toString().toUpperCase()}</h1>
 
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                    <RoutinesCarousel>
                         {value.map(({ userRoutine, routine }) => (
                             <div
                                 key={userRoutine.id}
@@ -122,36 +134,11 @@ export default async function RoutinesPage() {
                             </div>
 
                         ))}
-                    </div>
+                    </RoutinesCarousel>
 
 
                 </div>
             ))}
-            {/*(routines?.map((routine) => (
-                <Link
-                    href={'/routines/[id]'}
-                    as={`routines/${routine.routine_id}`}
-                    key={routine.routine_id}
-                    className='w-full overflow-hidden relative'
-                >
-                    <div className='h-72'>
-                        <Image
-                            src={routine.main_img_url}
-                            alt={routine.name}
-                            fill={true}
-                            objectFit='cover'
-                        />
-                        <div className='absolute inset-0 bg-gray-800 bg-opacity-50'></div>
-                    </div>
-
-                    <div className='absolute inset-0 p-2 flex flex-col justify-end bg-gradient-to-t from-gray-700 to-transparent'>
-                        <p className='text-xl font-bold'>{routine.name}</p>
-                    </div>
-
-                </Link>
-            ))
-            )*/}
         </div>
-
     </div>
 }

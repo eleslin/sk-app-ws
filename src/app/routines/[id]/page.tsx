@@ -1,4 +1,4 @@
-import supabase from "@/app/utils/supabase"
+import { createClient } from "@/app/utils/supabase/server"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -9,6 +9,7 @@ interface PageProps {
 }
 
 export default async function Routine({ params }: PageProps) {
+    const supabase = createClient()
     const { id } = params
 
     // fetch routine to get name ad other info

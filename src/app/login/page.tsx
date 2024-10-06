@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import validator from 'validator'
-import supabase from "../utils/supabase"
+import { createClient } from "../utils/supabase/client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
@@ -12,6 +12,7 @@ export default function LoginForm() {
     const [password, setPassword] = useState('')
     const [unvalid, setUnvalid] = useState(false)
     const router = useRouter()
+    const supabase = createClient()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()

@@ -3,14 +3,15 @@
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import validator from "validator"
-import supabase from "../utils/supabase"
 import Link from "next/link"
+import { createClient } from "../utils/supabase/client"
 
 export default function SignupForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [unvalid, setUnvalid] = useState(false)
     const router = useRouter()
+    const supabase = createClient()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
