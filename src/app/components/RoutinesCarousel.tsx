@@ -27,24 +27,29 @@ export default function RoutinesCarousel({ children }: Props) {
     };
 
     return (
-        <Carousel
-            swipeable={true}
-            draggable={false}
-            responsive={responsive}
-            showDots={true}
-            ssr={true}
-            infinite={true}
-            autoPlay={false}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={500}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            itemClass="carousel-item-padding-40-px"
-            renderDotsOutside={true}
-        >
-            {children}
-        </Carousel>
+        <div className="relative">
+            <Carousel
+                className="unset"
+                swipeable={true}
+                draggable={true}
+                responsive={responsive}
+                showDots={true}
+                ssr={true}
+                infinite={true}
+                autoPlay={false}
+                autoPlaySpeed={1000}
+                keyBoardControl={true}
+                customTransition="all .5"
+                transitionDuration={500}
+                renderDotsOutside={true}
+                arrows={true}
+                containerClass="carousel-container"
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                itemClass="pr-[20px]"
+            >
+                {children}
+            </Carousel>
+        </div>
+
     )
 }

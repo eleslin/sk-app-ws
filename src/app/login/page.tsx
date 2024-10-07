@@ -24,12 +24,6 @@ export default function LoginForm() {
 
             if (user.user) {
                 router.push('/routines')
-
-                await supabase.from('profiles').insert({
-                    id: user.user.id,
-                    created_at: new Date(),
-                    updated_at: new Date(),
-                });
             } else if (error) {
                 console.log(error)
             }
