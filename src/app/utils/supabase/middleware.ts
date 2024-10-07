@@ -35,15 +35,28 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Check if user has already been in home
+  const hasVisitedHome = request.cookies.get('hasVisitedHome')?.value
+
+  const { pathname } = request.nextUrl
+
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
+    !pathname.startsWith('/login') && 
+    !pathname.startsWith('/signup') && 
+    !pathname.startsWith('/auth')
   ) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    if (!hasVisitedHome && pathname === '/') {
+      // Primera visita: permitir el acceso a la página de inicio
+      const response = NextResponse.next()
+      response.cookies.set('hasVisitedHome', 'true', { path: '/', httpOnly: true })
+      return response
+    } else {
+      // Después de la primera visita: redirigir a login si no está autenticado
+      const loginUrl = request.nextUrl.clone()
+      loginUrl.pathname = '/login'
+      return NextResponse.redirect(loginUrl)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
