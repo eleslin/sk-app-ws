@@ -1,5 +1,6 @@
 'use client'
-import Carousel from "react-multi-carousel";
+import { MdMaximize } from "react-icons/md";
+import Carousel, { DotProps } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 interface Props {
@@ -26,6 +27,16 @@ export default function RoutinesCarousel({ children }: Props) {
         }
     };
 
+    const CustomDot = ({ index, active, onClick, carouselState }: DotProps) => {
+        return (
+            <li
+                className="cursor-pointer"
+                onClick={() => onClick!()}
+            >
+                <MdMaximize color={active ? "#fff" : "rgba(255, 255, 255, 0.4"} />
+            </li>
+        );
+    };
     return (
         <div className="relative">
             <Carousel
@@ -43,9 +54,10 @@ export default function RoutinesCarousel({ children }: Props) {
                 transitionDuration={500}
                 renderDotsOutside={true}
                 arrows={true}
+                customDot={<CustomDot />}
                 containerClass="carousel-container"
                 removeArrowOnDeviceType={["tablet", "mobile"]}
-                itemClass="pr-[20px]"
+                itemClass="px-[10px]"
             >
                 {children}
             </Carousel>

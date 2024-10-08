@@ -63,3 +63,8 @@ form {
     text-wrap: balance;
   }
 }
+
+.react-multi-carousel-dot-list {
+  position: relative!important;
+  padding-top: 10px!important;
+}
