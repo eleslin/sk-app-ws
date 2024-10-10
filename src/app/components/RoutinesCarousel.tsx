@@ -27,7 +27,7 @@ export default function RoutinesCarousel({ children }: Props) {
         }
     };
 
-    const CustomDot = ({ index, active, onClick, carouselState }: DotProps) => {
+    const CustomDot = ({ active, onClick }: DotProps) => {
         return (
             <li
                 className="cursor-pointer"
