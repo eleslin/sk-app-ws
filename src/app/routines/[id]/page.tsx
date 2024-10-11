@@ -1,3 +1,4 @@
+import Header from "@/app/components/Header"
 import { createClient } from "@/app/utils/supabase/server"
 import Image from "next/image"
 import Link from "next/link"
@@ -28,6 +29,7 @@ export default async function Routine({ params }: PageProps) {
 
     return (
         <>
+            <Header />
             {/* Header of weeks info, with name of the routine and image */}
             <div className='w-full max-w-4xl mx-auto bg-gray-800 overflow-hidden  relative'>
                 <div className='h-[30rem] md:h-96'>

@@ -18,6 +18,7 @@ export default async function Home() {
         <Link href={`${data?.user ? '/routines' : '/login'}`} className="bg-white rounded-md p-2">
           <IoChevronForward size='30px' className="text-gray-800" />
         </Link>
+
       </main>
     </div>
   );

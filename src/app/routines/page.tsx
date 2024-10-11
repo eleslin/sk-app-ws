@@ -95,18 +95,18 @@ export default async function RoutinesPage() {
 
     return <div className='flex flex-col'>
         {/* Header */}
-        <div className='bg-gray-800 py-5 mb-5 shadow-lg flex justify-between items-center px-6'>
-            <p className='logo text-[7rem]'>SK</p>
+        <div className='fixed w-full z-50 bg-gray-800 py-2 mb-5 shadow-lg flex justify-between items-center px-6'>
+            <p className='logo'>SK</p>
             <Logout />
         </div>
 
 
         {/* List of routines */}
         <Suspense fallback={<Loading />}>
-            <div className='flex flex-col gap-4 px-8 relative'>
+            <div className='flex flex-col gap-4 px-8 py-24 relative'>
                 {Array.from(userRoutinesCategorized).map(([key, value]) => (
                     <div key={key}>
-                        <h1>{key.toString().toUpperCase()}</h1>
+                        <h1 className='pb-4 pt-8'>{key.toString().toUpperCase()}</h1>
 
                         <RoutinesCarousel>
                             {value.map(({ userRoutine, routine }) => (
