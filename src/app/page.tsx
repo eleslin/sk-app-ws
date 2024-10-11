@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { IoChevronForward } from "react-icons/io5";
-import { createClient } from "./utils/supabase/server";
 
+import { createClient } from "./utils/supabase/server";
+import HomeLink from "@/components/HomeLink";
 export default async function Home() {
   const supabase = createClient()
 
@@ -10,15 +9,12 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <main className="min-h-screen w-full flex flex-col gap-2 items-center justify-center">
+      <main className="min-h-screen w-full flex flex-col gap-2 items-center justify-center animate-fadeIn">
         {/* Logo */}
         <p className='logo'>SK</p>
 
         {/* Login */}
-        <Link href={`${data?.user ? '/routines' : '/login'}`} className="bg-white rounded-md p-2">
-          <IoChevronForward size='30px' className="text-gray-800" />
-        </Link>
-
+        <HomeLink user={data?.user} />
       </main>
     </div>
   );

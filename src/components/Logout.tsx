@@ -1,7 +1,7 @@
 'use client'
 
 import { IoLogOutOutline } from "react-icons/io5"
-import { createClient } from "../utils/supabase/client"
+import { createClient } from "@/app/utils/supabase/client"
 import { useRouter } from "next/navigation"
 
 export default function Logout() {

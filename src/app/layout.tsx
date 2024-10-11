@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { Providers } from './providers'
 
 const APP_NAME = "PWA App";
 const APP_DEFAULT_TITLE = "SK Workout PWA App";
@@ -48,12 +49,12 @@ export const viewport: Viewport = {
 };
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../styles/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../styles/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -72,7 +73,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh bg-gray-900 text-white`}
       >
         <main className="overflow-hidden">
-          {children}
+          <Providers>
+            {children}
+          </Providers>
         </main>
       </body>
     </html>

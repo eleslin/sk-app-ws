@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { createClient } from '../utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Loading from './loading';
-import Logout from '@/core/components/Logout';
-import RoutinesCarousel from '@/core/components/RoutinesCarousel';
+import Logout from '@/components/Logout';
+import RoutinesCarousel from '@/components/RoutinesCarousel';
 
 
 enum RoutineCategory {
@@ -93,7 +93,7 @@ export default async function RoutinesPage() {
     }
 
 
-    return <div className='flex flex-col'>
+    return <div className='flex flex-col animate-fadeIn'>
         {/* Header */}
         <div className='fixed w-full z-50 bg-gray-800 py-2 mb-5 shadow-lg flex justify-between items-center px-6'>
             <p className='logo'>SK</p>
