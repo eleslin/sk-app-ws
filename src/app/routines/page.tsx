@@ -3,9 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '../utils/supabase/server';
 import { redirect } from 'next/navigation';
-import RoutinesCarousel from '../components/RoutinesCarousel';
-import Logout from '../components/Logout';
 import Loading from './loading';
+import Logout from '@/core/components/Logout';
+import RoutinesCarousel from '@/core/components/RoutinesCarousel';
 
 
 enum RoutineCategory {

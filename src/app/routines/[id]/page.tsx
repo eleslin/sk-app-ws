@@ -1,5 +1,6 @@
-import Header from "@/app/components/Header"
+
 import { createClient } from "@/app/utils/supabase/server"
+import Header from "@/core/components/Header"
 import Image from "next/image"
 import Link from "next/link"
 
