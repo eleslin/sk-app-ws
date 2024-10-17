@@ -1,8 +1,7 @@
 import React from 'react'
 import { createClient } from '@/app/utils/supabase/server';
-import VideoButton from '@/app/components/VideoButton';
-import DescButton from '@/app/components/DescButton';
-
+import VideoButton from '@/components/VideoButton';
+import DescButton from '@/components/DescButton';
 interface PageProps {
     params: {
         id: string;

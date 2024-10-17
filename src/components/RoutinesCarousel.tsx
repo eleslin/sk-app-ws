@@ -22,12 +22,13 @@ export default function RoutinesCarousel({ children }: Props) {
         },
         mobile: {
             breakpoint: { max: 464, min: 0 },
-            items: 1,
+            items: 2,
             slidesToSlide: 1 // optional, default to 1.
         }
     };
 
     const CustomDot = ({ active, onClick }: DotProps) => {
+
         return (
             <li
                 className="cursor-pointer"
@@ -50,13 +51,12 @@ export default function RoutinesCarousel({ children }: Props) {
                 autoPlay={false}
                 autoPlaySpeed={1000}
                 keyBoardControl={true}
-                customTransition="all .5"
+                customTransition="all 1"
                 transitionDuration={500}
                 renderDotsOutside={true}
                 arrows={true}
                 customDot={<CustomDot />}
                 containerClass="carousel-container"
-                removeArrowOnDeviceType={["tablet", "mobile"]}
                 itemClass="px-[10px]"
             >
                 {children}

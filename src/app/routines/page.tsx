@@ -1,11 +1,11 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '../utils/supabase/server';
 import { redirect } from 'next/navigation';
-import Loading from './loading';
 import Logout from '@/components/Logout';
-import RoutinesCarousel from '@/components/RoutinesCarousel';
+import Skeleton from 'react-loading-skeleton';
+import '../../styles/transitions.css'
 
 
 enum RoutineCategory {
@@ -95,54 +95,52 @@ export default async function RoutinesPage() {
 
     return <div className='flex flex-col animate-fadeIn'>
         {/* Header */}
-        <div className='fixed w-full z-50 bg-gray-800 py-2 mb-5 shadow-lg flex justify-between items-center px-6'>
+        <div className='fixed w-full z-[2000] bg-gray-800 py-2 mb-5 shadow-lg flex justify-between items-center px-6'>
             <p className='logo'>SK</p>
             <Logout />
         </div>
 
 
         {/* List of routines */}
-        <Suspense fallback={<Loading />}>
-            <div className='flex flex-col gap-4 px-8 py-24 relative'>
-                {Array.from(userRoutinesCategorized).map(([key, value]) => (
-                    <div key={key}>
-                        <h1 className='pb-4 pt-8'>{key.toString().toUpperCase()}</h1>
 
-                        <RoutinesCarousel>
-                            {value.map(({ userRoutine, routine }) => (
-                                <div
-                                    key={userRoutine.id}
-                                    className='w-full overflow-hidden relative rounded-md'
+        {userRoutinesCategorized ? <div className='flex flex-col gap-4 px-8 py-24 relative'>
+            {Array.from(userRoutinesCategorized).map(([key, value]) => (
+                <div key={key}>
+                    <h1 className='pb-4 pt-8'>{key.toString().toUpperCase()}</h1>
+
+                    <div className='flex overflow-y-scroll gap-4'>
+                        {value.map(({ userRoutine, routine }) => (
+                            <div
+                                key={userRoutine.id}
+                                className='min-w-[200px] overflow-hidden relative rounded-md fadeIn'
+                            >
+                                <Link
+                                    href={'/routines/[id]'}
+                                    as={`routines/${routine.routine_id}`}
                                 >
-                                    <Link
-                                        href={'/routines/[id]'}
-                                        as={`routines/${routine.routine_id}`}
-                                    >
-                                        <div className='h-72'>
-                                            <Image
-                                                src={routine.main_img_url}
-                                                alt={routine.name}
-                                                fill={true}
-                                                objectFit='cover'
-                                            />
-                                            <div className='absolute inset-0 bg-gray-800 bg-opacity-50'></div>
-                                        </div>
+                                    <div className='h-72'>
+                                        <Image
+                                            src={routine.main_img_url}
+                                            alt={routine.name}
+                                            fill={true}
+                                            objectFit='cover'
+                                        />
+                                        <div className='absolute inset-0 bg-gray-800 bg-opacity-50'></div>
+                                    </div>
 
-                                        <div className='absolute inset-0 p-4 flex flex-col justify-end bg-gradient-to-t from-gray-700 to-transparent'>
-                                            <p className='text-xl font-bold'>{routine.name}</p>
-                                        </div>
+                                    <div className='absolute inset-0 p-4 flex flex-col justify-end bg-gradient-to-t from-gray-700 to-transparent'>
+                                        <p className='text-xl font-bold'>{routine.name}</p>
+                                    </div>
 
-                                    </Link>
-                                </div>
+                                </Link>
+                            </div>
 
-                            ))}
-                        </RoutinesCarousel>
-
-
+                        ))}
                     </div>
-                ))}
-            </div>
-        </Suspense>
+
+                </div>
+            ))}
+        </div> : <Skeleton count={5} />}
 
     </div>
 }
