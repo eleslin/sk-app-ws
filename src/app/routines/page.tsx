@@ -3,9 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '../utils/supabase/server';
 import { redirect } from 'next/navigation';
-import Logout from '@/components/Logout';
 import Skeleton from 'react-loading-skeleton';
 import '../../styles/transitions.css'
+import HomeHeader from '@/components/HomeHeader';
 
 
 enum RoutineCategory {
@@ -95,24 +95,22 @@ export default async function RoutinesPage() {
 
     return <div className='flex flex-col animate-fadeIn'>
         {/* Header */}
-        <div className='fixed w-full z-[2000] bg-gray-800 py-2 mb-5 shadow-lg flex justify-between items-center px-6'>
-            <p className='logo'>SK</p>
-            <Logout />
-        </div>
+        <HomeHeader />
+
 
 
         {/* List of routines */}
 
-        {userRoutinesCategorized ? <div className='flex flex-col gap-4 px-8 py-24 relative'>
+        {userRoutinesCategorized ? <div className='flex flex-col gap-4 py-24 relative'>
             {Array.from(userRoutinesCategorized).map(([key, value]) => (
                 <div key={key}>
-                    <h1 className='pb-4 pt-8'>{key.toString().toUpperCase()}</h1>
+                    <h1 className='pb-4 pt-8 px-8'>{key.toString().toUpperCase()}</h1>
 
-                    <div className='flex overflow-y-scroll gap-4'>
+                    <div className='flex overflow-y-scroll'>
                         {value.map(({ userRoutine, routine }) => (
                             <div
                                 key={userRoutine.id}
-                                className='min-w-[200px] overflow-hidden relative rounded-md fadeIn'
+                                className='ml-4 min-w-[200px] overflow-hidden relative rounded-md fadeIn'
                             >
                                 <Link
                                     href={'/routines/[id]'}

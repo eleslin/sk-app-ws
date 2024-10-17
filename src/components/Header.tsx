@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 interface PageProps {
     img: string;
@@ -9,31 +8,32 @@ interface PageProps {
 }
 
 export default function Header({ img, title }: PageProps) {
-    const [smallHeader, setSmallHeader] = useState(false)
+    const [offsetY, setOffsetY] = useState(0);
+
+    const handleScroll = () => {
+        setOffsetY(window.pageYOffset);
+    };
+
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            window.addEventListener("scroll", () =>
-                setSmallHeader(window.scrollY > 100)
-            );
-        }
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
-        <div className='fixed w-full z-50'>
-            {smallHeader ? <h1>Small</h1> : <div className='w-full max-w-4xl mx-auto bg-gray-800 overflow-hidden  relative'>
-                <div className='h-[30rem] md:h-96'>
-                    <Image src={img} alt={`imagen principal de la rutina ${title}`} fill={true} objectFit='cover' />
+        <div className="relative w-full h-[30rem] overflow-hidden mt-[5rem]">
+            {/* Imagen de fondo con efecto parallax */}
+            <div
+                className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+                style={{
+                    backgroundImage: `url(${img})`,
+                    transform: `translateY(${offsetY * 0.5}px)`, // Control del parallax
+                }}
+            ></div>
 
-                    <div className='absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent flex items-end p-4'>
-                        <div className='flex justify-between gap-3 items-center'>
-                            <h1 className='flex-grow text-2xl md:text-4xl font-bold text-teal-300'>{title}</h1>
-                        </div>
-
-                    </div>
-                </div>
-
-
-            </div>}
+            {/* Contenido superpuesto (texto) */}
+            <div className="relative z-10 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
+                <h1 className="text-white text-4xl font-bold">{title}</h1>
+            </div>
         </div>
-    )
+    );
 }
