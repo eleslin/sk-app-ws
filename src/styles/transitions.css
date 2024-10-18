@@ -10,3 +10,18 @@
         opacity: 1;
     }
 }
+
+.slideIn {
+    animation: slideIn 300ms ease-in;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(-30%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}

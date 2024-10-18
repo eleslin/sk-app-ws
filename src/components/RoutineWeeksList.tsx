@@ -64,11 +64,6 @@ export default function RoutineWeeksList({ routine, routineWeeksDays }: { routin
                 <Header img={routine?.main_img_url} title={routine?.name} />
             </div>
 
-            <div className='w-full max-w-4xl mx-auto bg-gray-800 overflow-hidden relative'>
-
-            </div>
-
-            <div className="h-[40rem]"></div>
             <div className='bg-gray-800 flex flex-col'>
                 {Array.from(routineWeeksDays.keys()).map((routineWeek) => (
                     <div key={routineWeek.routine_week_id} className='mx-3 my-3'>

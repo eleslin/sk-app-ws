@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import '../styles/transitions.css'
 
 interface PageProps {
     img: string;
@@ -9,9 +10,11 @@ interface PageProps {
 
 export default function Header({ img, title }: PageProps) {
     const [offsetY, setOffsetY] = useState(0);
+    const [smallHeader, setSmallHeader] = useState(false)
 
     const handleScroll = () => {
-        setOffsetY(window.pageYOffset);
+        setOffsetY(window.scrollY);
+        setSmallHeader(window.scrollY > 200)
     };
 
     useEffect(() => {
@@ -31,9 +34,13 @@ export default function Header({ img, title }: PageProps) {
             ></div>
 
             {/* Contenido superpuesto (texto) */}
-            <div className="relative z-10 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-                <h1 className="text-white text-4xl font-bold">{title}</h1>
-            </div>
+            {smallHeader
+                ? <div className="fixed w-full min-h-[6.5rem] top-0 bg-gray-800/90 shadow-lg flex flex-col items-center justify-end slideIn">
+                    <h1 className="text-white text-xl font-bold mb-2">{title}</h1>
+                </div>
+                : <div className="relative z-10 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
+                    <h1 className="text-white text-4xl font-bold">{title}</h1>
+                </div>}
         </div>
     );
 }
