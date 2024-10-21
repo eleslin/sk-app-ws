@@ -58,8 +58,6 @@ export default function RoutineWeeksList({ routine, routineWeeksDays }: { routin
         <div className="animate-fadeIn">
             <HomeHeader />
 
-
-
             <div className="w-full max-w-4xl mx-auto bg-gray-800 overflow-hidden relative">
                 <Header img={routine?.main_img_url} title={routine?.name} />
             </div>
