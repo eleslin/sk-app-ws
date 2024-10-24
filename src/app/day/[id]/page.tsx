@@ -82,42 +82,49 @@ export default async function Page({ params }: PageProps) {
 
 
     return (
-        <div>
+        <div className="animate-fadeIn">
             <HomeHeader />
 
-            {
-                Array.from(dayExerciseSet.entries()).map(([exercise, sets]) => (
-                    <article className='bg-gray-800 text-white border-2 border-gray-700 rounded-md px-4 py-8 my-12 mx-4 flex flex-col gap-4 relative overflow-visible' key={exercise.exercise_id}>
-                        <p className='text-2xl font-bold'>{exercise.spanish_name}</p>
+            <div className="w-full max-w-4xl mx-auto bg-gray-800 overflow-hidden relative">
 
-                        {sets.map((set) => (
-                            <div className='flex justify-between' key={set.exercise_set_id}>
-                                <div className='flex flex-col items-center'>
-                                    <p className='text-teal-300 font-semibold'>Series</p>
-                                    <p>{set.quantity}</p>
+            </div>
+
+            <div className='mt-32'>
+                {
+                    Array.from(dayExerciseSet.entries()).map(([exercise, sets]) => (
+                        <article className='bg-gray-800 text-white rounded-md px-4 py-8 my-12 mx-4 flex flex-col gap-4 relative overflow-visible shadow-xl' key={exercise.exercise_id}>
+                            <p className='text-2xl font-bold'>{exercise.spanish_name}</p>
+
+                            {sets.map((set) => (
+                                <div className='flex justify-between' key={set.exercise_set_id}>
+                                    <div className='flex flex-col items-center'>
+                                        <p className='text-teal-300 font-semibold'>Series</p>
+                                        <p>{set.quantity}</p>
+                                    </div>
+                                    <div className='flex flex-col items-center'>
+                                        <p className='text-teal-300 font-semibold'>Reps</p>
+                                        <p>{set.reps}</p>
+                                    </div>
+                                    <div className='flex flex-col items-center'>
+                                        <p className='text-teal-300 font-semibold'>RIR</p>
+                                        <p>{set.rir}</p>
+                                    </div>
                                 </div>
-                                <div className='flex flex-col items-center'>
-                                    <p className='text-teal-300 font-semibold'>Reps</p>
-                                    <p>{set.reps}</p>
-                                </div>
-                                <div className='flex flex-col items-center'>
-                                    <p className='text-teal-300 font-semibold'>RIR</p>
-                                    <p>{set.rir}</p>
-                                </div>
+                            ))}
+
+                            {/* Text field to add weights */}
+
+                            {/* Video and description */}
+                            <div className='absolute -bottom-6 left-0 w-full flex items-center gap-24 justify-center'>
+                                <VideoButton video={exercise.technique_video_url} />
+                                <DescButton description={exercise.spanish_description} />
                             </div>
-                        ))}
 
-                        {/* Text field to add weights */}
+                        </article>
+                    ))
+                }
+            </div>
 
-                        {/* Video and description */}
-                        <div className='absolute -bottom-6 left-0 w-full flex items-center gap-24 justify-center'>
-                            <VideoButton video={exercise.technique_video_url} />
-                            <DescButton description={exercise.spanish_description} />
-                        </div>
-
-                    </article>
-                ))
-            }
         </div>
 
 
