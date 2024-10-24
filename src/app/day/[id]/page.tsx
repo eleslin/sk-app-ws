@@ -2,6 +2,7 @@ import React from 'react'
 import { createClient } from '@/app/utils/supabase/server';
 import VideoButton from '@/components/VideoButton';
 import DescButton from '@/components/DescButton';
+import HomeHeader from '@/components/HomeHeader';
 interface PageProps {
     params: {
         id: string;
@@ -81,7 +82,9 @@ export default async function Page({ params }: PageProps) {
 
 
     return (
-        <>
+        <div>
+            <HomeHeader />
+
             {
                 Array.from(dayExerciseSet.entries()).map(([exercise, sets]) => (
                     <article className='bg-gray-800 text-white border-2 border-gray-700 rounded-md px-4 py-8 my-12 mx-4 flex flex-col gap-4 relative overflow-visible' key={exercise.exercise_id}>
@@ -115,7 +118,7 @@ export default async function Page({ params }: PageProps) {
                     </article>
                 ))
             }
-        </>
+        </div>
 
 
     )

@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
-import Link from "next/link";
 import '../styles/transitions.css'
 import HomeHeader from "./HomeHeader";
+import { IoChevronForward } from "react-icons/io5";
+import { Spinner } from "@nextui-org/spinner";
+import { useRouter } from "next/navigation";
 
 interface RoutineWeeks {
     routine_week_id: string;
@@ -45,6 +47,13 @@ interface Routine {
 
 export default function RoutineWeeksList({ routine, routineWeeksDays }: { routine: Routine, routineWeeksDays: Map<RoutineWeeks, WeekDay[]> }) {
     const [expandedWeeks, setExpandedWeeks] = useState<string[]>([]);
+    const [loadingDay, setLoadingDay] = useState<string | null>(null);
+    const [isMounted, setIsMounted] = useState(false);
+    const router = useRouter()
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
 
     const toggleWeek = (routine_week_id: string) => {
         setExpandedWeeks((prev) => (
@@ -53,6 +62,14 @@ export default function RoutineWeeksList({ routine, routineWeeksDays }: { routin
                 : [...prev, routine_week_id]
         ));
     };
+
+    const handleClickDay = async (week_day_id: string) => {
+        if (isMounted) {
+            setLoadingDay(week_day_id);
+            await router.push(`/day/${week_day_id}`);
+        }
+
+    }
 
     return (
         <div className="animate-fadeIn">
@@ -64,25 +81,29 @@ export default function RoutineWeeksList({ routine, routineWeeksDays }: { routin
 
             <div className='bg-gray-800 flex flex-col'>
                 {Array.from(routineWeeksDays.keys()).map((routineWeek) => (
-                    <div key={routineWeek.routine_week_id} className='mx-3 my-3'>
+                    <div key={routineWeek.routine_week_id} className='mx-3 my-3 bg-gray-700 rounded-md shadow-md transition-all'>
                         <button
                             onClick={() => toggleWeek(routineWeek.routine_week_id)}
-                            className='text-white bg-gray-700 border-teal-500 border-2 w-full rounded-md px-3 py-4'
+                            className='text-white w-full rounded-md px-3 py-4'
                         >
-                            <p className='text-teal-300 font-bold'>
-                                Semana {routineWeek.number}
+                            <p className='text-white font-bold'>
+                                SEMANA {routineWeek.number}
                             </p>
                         </button>
 
                         {/* Mostrar días solo si la semana está expandida */}
                         {expandedWeeks.includes(routineWeek.routine_week_id) && (
-                            <div className='ml-5 mt-2'>
+                            <div className='mt-2 mx-2 animate-fadeInUp'
+                            >
                                 {routineWeeksDays.get(routineWeek)?.map((day) => (
-                                    <Link href={`/day/${day.week_day_id}`} key={day.week_day_id}>
-                                        <p className='text-white hover:text-teal-300'>
-                                            Día {day.number}: {day.name}
-                                        </p>
-                                    </Link>
+                                    <div onClick={() => handleClickDay(day.week_day_id)} key={day.week_day_id}>
+                                        <div className='text-white bg-gray-800/50 py-3 px-4 mb-2 rounded-md shadow-sm hover:shadow-lg flex justify-between items-center transition-all'>
+                                            <p>Día {day.number}: {day.name}</p>
+                                            {loadingDay == day.week_day_id
+                                                ? <Spinner color="white" size="sm" />
+                                                : <IoChevronForward />}
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         )}
