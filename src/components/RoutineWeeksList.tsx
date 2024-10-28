@@ -79,9 +79,9 @@ export default function RoutineWeeksList({ routine, routineWeeksDays }: { routin
                 <Header img={routine?.main_img_url} title={routine?.name} />
             </div>
 
-            <div className='bg-gray-800 flex flex-col'>
+            <div className='bg-gray-900 flex flex-col'>
                 {Array.from(routineWeeksDays.keys()).map((routineWeek) => (
-                    <div key={routineWeek.routine_week_id} className='mx-3 my-3 bg-gray-700 rounded-md shadow-md transition-all'>
+                    <div key={routineWeek.routine_week_id} className='mx-3 my-3 bg-gray-800 rounded-md shadow-md transition-all'>
                         <button
                             onClick={() => toggleWeek(routineWeek.routine_week_id)}
                             className='text-white w-full rounded-md px-3 py-4'
@@ -97,7 +97,7 @@ export default function RoutineWeeksList({ routine, routineWeeksDays }: { routin
                             >
                                 {routineWeeksDays.get(routineWeek)?.map((day) => (
                                     <div onClick={() => handleClickDay(day.week_day_id)} key={day.week_day_id}>
-                                        <div className='text-white bg-gray-800/50 py-3 px-4 mb-2 rounded-md shadow-sm hover:shadow-lg flex justify-between items-center transition-all'>
+                                        <div className='text-white bg-gray-700 py-3 px-4 mb-2 rounded-md shadow-sm hover:shadow-lg flex justify-between items-center transition-all'>
                                             <p>Día {day.number}: {day.name}</p>
                                             {loadingDay == day.week_day_id
                                                 ? <Spinner color="white" size="sm" />

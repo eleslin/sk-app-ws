@@ -76,3 +76,7 @@ form {
   position: relative!important;
   padding-top: 10px!important;
 }
+
+.ReactModal__Overlay {
+  z-index: 3000;
+}

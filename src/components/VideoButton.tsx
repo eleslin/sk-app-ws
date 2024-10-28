@@ -12,7 +12,7 @@ export default function VideoButton({ video }: Props) {
     const [showModal, setShowModal] = useState(false)
 
     return (<>
-        <button className={`bg-teal-500 p-4 rounded-full`} onClick={() => setShowModal(true)}>
+        <button className={`bg-gray-950 p-4 rounded-full shadow-2xl `} onClick={() => setShowModal(true)}>
             {video && <IoPlay />}
         </button>
         <Modal
