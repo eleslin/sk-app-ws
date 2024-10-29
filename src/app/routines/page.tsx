@@ -1,11 +1,10 @@
 import React from 'react'
-import Link from 'next/link';
-import Image from 'next/image';
 import { createClient } from '../utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 import '../../styles/transitions.css'
 import HomeHeader from '@/components/HomeHeader';
+import RoutineCard from '@/components/RoutineCard';
 
 
 enum RoutineCategory {
@@ -108,30 +107,7 @@ export default async function RoutinesPage() {
 
                     <div className='flex overflow-y-scroll'>
                         {value.map(({ userRoutine, routine }) => (
-                            <div
-                                key={userRoutine.id}
-                                className='ml-4 min-w-[200px] overflow-hidden relative rounded-md fadeIn'
-                            >
-                                <Link
-                                    href={'/routines/[id]'}
-                                    as={`routines/${routine.routine_id}`}
-                                >
-                                    <div className='h-72'>
-                                        <Image
-                                            src={routine.main_img_url}
-                                            alt={routine.name}
-                                            fill={true}
-                                            objectFit='cover'
-                                        />
-                                        <div className='absolute inset-0 bg-gray-800 bg-opacity-50'></div>
-                                    </div>
-
-                                    <div className='absolute inset-0 p-4 flex flex-col justify-end bg-gradient-to-t from-gray-700 to-transparent'>
-                                        <p className='text-xl font-bold'>{routine.name}</p>
-                                    </div>
-
-                                </Link>
-                            </div>
+                            <RoutineCard routine={routine} key={userRoutine.id} />
 
                         ))}
                     </div>

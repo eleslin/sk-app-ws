@@ -17,9 +17,9 @@ export default function VideoButton({ video }: Props) {
         </button>
         <Modal
             isOpen={showModal}
-            className='flex flex-col items-end bg-gray-800 shadow-xl rounded-md m-16 mt-32 gap-4 relative overflow-hidden'
+            className='flex flex-col items-end bg-gray-800 shadow-xl rounded-md m-16 mt-32 gap-4 relative overflow-hidden z-[3000]'
         >
-            <button className='text-2xl text-white hover:scale-125 transition-all absolute top-2 right-2 shadow-xl rounded-xl p-1' onClick={() => setShowModal(false)}><IoClose /></button>
+            <button className='text-2xl text-white hover:scale-125 transition-all absolute top-2 right-2 shadow-xl rounded-xl p-1 z-[3000]' onClick={() => setShowModal(false)}><IoClose /></button>
             {video && <video loop={true} autoPlay={true} controls>
                 <source src={video!} type="video/mp4" />
             </video>}
