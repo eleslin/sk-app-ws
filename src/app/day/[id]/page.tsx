@@ -24,7 +24,14 @@ interface ExerciseSet {
     quantity: number
     reps: number
     rir: number
+    is_completed: boolean
+}
 
+interface UserSet {
+    user_set_id: string
+    user_id: string
+    exercise_set_id: string
+    is_completed: boolean
 }
 
 interface WeekDay {
@@ -39,7 +46,19 @@ interface WeekDay {
 
 export default async function Page({ params }: PageProps) {
     const supabase = createClient()
-    const dayExerciseSet: Map<Exercise, ExerciseSet[]> = new Map<Exercise, ExerciseSet[]>()
+    const dayExerciseSet: Map<Exercise, { set: ExerciseSet; userSet: UserSet }[]> = new Map<Exercise, { set: ExerciseSet; userSet: UserSet }[]>();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        // Manejar caso sin sesión, redirigir o mostrar un mensaje
+        console.log("Usuario no autenticado");
+        return <p>No estás autenticado</p>;
+    }
+    const userId = user.id;
+
+    console.log("USER ID IS ", userId)
+
+
     let weekDay: WeekDay | null = null;
 
     const { id } = params
@@ -47,21 +66,26 @@ export default async function Page({ params }: PageProps) {
     // get day exercises
     try {
         // Realizamos las consultas en paralelo
-        const [dayExercisesResult, exercisesResult, setsResult, weekDayResult] = await Promise.all([
+        const [dayExercisesResult, exercisesResult, setsResult, userSetsResult, weekDayResult] = await Promise.all([
             supabase.from('day_exercises').select().eq('week_day_id', id),
             supabase.from('exercises').select(),
             supabase.from('sets').select(),
+            supabase.from('user_sets').select(),
             supabase.from('week_day').select().eq('week_day_id', id).single()
         ]);
+
+
 
         // Gestionar errores
         if (dayExercisesResult.error) throw dayExercisesResult.error;
         if (exercisesResult.error) throw exercisesResult.error;
         if (setsResult.error) throw setsResult.error;
+        if (userSetsResult.error) throw userSetsResult.error;
 
         const dayExercises = dayExercisesResult.data ?? [];
         const exercises = exercisesResult.data ?? [];
         const sets = setsResult.data ?? [];
+        const userSets = userSetsResult.data ?? [];
         weekDay = weekDayResult.data;
 
         // Obtener los ids de los ejercicios de los day_exercises filtrados
@@ -71,11 +95,12 @@ export default async function Page({ params }: PageProps) {
         const filteredExercises = exercises.filter((exercise: Exercise) => exerciseIds.includes(exercise.exercise_id));
 
         // Agrupar los sets por `day_exercise_id`
-        const setsGroupedByDayExerciseId = sets.reduce((acc: Record<string, ExerciseSet[]>, set: ExerciseSet) => {
+        const setsGroupedByDayExerciseId = sets.reduce((acc: Record<string, { set: ExerciseSet; userSet: UserSet }[]>, set: ExerciseSet) => {
+            const userSet = userSets.find(us => us.exercise_set_id === set.exercise_set_id);
             if (!acc[set.day_exercise_id]) {
                 acc[set.day_exercise_id] = [];
             }
-            acc[set.day_exercise_id].push(set);
+            acc[set.day_exercise_id].push({ set, userSet });
             return acc;
         }, {});
 
@@ -90,13 +115,14 @@ export default async function Page({ params }: PageProps) {
             dayExerciseSet.set(exercise, relatedSets);
         }
 
+
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 
-
     return (
-        <div className="animate-fadeIn">
+        dayExerciseSet && <div className="animate-fadeIn">
             <HomeHeader />
 
             {weekDay && <div className="w-full max-w-4xl mx-auto bg-gray-700 overflow-hidden relative">
@@ -107,10 +133,17 @@ export default async function Page({ params }: PageProps) {
                 {
                     Array.from(dayExerciseSet.entries()).map(([exercise, sets]) => (
                         <article className='bg-gray-800 text-white rounded-md px-4 py-8 my-12 mx-4 flex flex-col gap-4 relative overflow-visible shadow-xl' key={exercise.exercise_id}>
-                            <p className='text-2xl font-bold'>{exercise.spanish_name}</p>
+                            <div className='flex items-center'>
 
-                            {sets.map((set) => (
+                            </div>
+                            {sets.map(({ set, userSet }) => (
                                 <div className='flex justify-between bg-gray-700 py-1 px-4 rounded-md' key={set.exercise_set_id}>
+                                    {/* Check button */}
+                                    {/*<SetButton initialCompleted={userSet.is_completed} exerciseSetId={userSet.exercise_set_id} userId={userId} />*/}
+                                    {/* Exercise name with conditional strikethrough */}
+                                    <p className={`text-2xl font-bold`}>
+                                        {exercise.spanish_name}
+                                    </p>
                                     <div className='flex flex-col items-center'>
                                         <p className='text-white/70 font-thin'>Series</p>
                                         <p>{set.quantity}</p>
@@ -122,6 +155,10 @@ export default async function Page({ params }: PageProps) {
                                     <div className='flex flex-col items-center'>
                                         <p className='text-white/70 font-thin'>RIR</p>
                                         <p>{set.rir}</p>
+                                    </div>
+                                    <div className='flex flex-col items-center'>
+                                        <p className='text-white/70 font-thin'>Completado</p>
+                                        <p>{userSet?.is_completed ? 'Sí' : 'No'}</p>
                                     </div>
                                 </div>
                             ))}

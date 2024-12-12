@@ -5,6 +5,7 @@ import validator from 'validator'
 import { createClient } from "../utils/supabase/client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Spinner } from "@nextui-org/spinner"
 
 
 export default function LoginForm() {
@@ -13,9 +14,11 @@ export default function LoginForm() {
     const [unvalid, setUnvalid] = useState(false)
     const router = useRouter()
     const supabase = createClient()
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        setLoading(true)
         if (validator.isEmail(email)) {
             const { data: user, error } = await supabase.auth.signInWithPassword({
                 email: email,
@@ -31,6 +34,7 @@ export default function LoginForm() {
         } else {
             setUnvalid(true);
         }
+        setLoading(false)
 
 
     }
@@ -61,13 +65,17 @@ export default function LoginForm() {
 
                 <div className="w-full flex flex-col items-center">
                     {unvalid && <p className="italic text-red-500 text-xs">Correo o contraseña incorrectos</p>}
-                    <button
-                        type="submit"
-                        className="block w-full text-center uppercase bg-gray-900/70 py-2 px-4 shadow-xl font-semibold"
-                        onClick={handleSubmit}
-                    >
-                        Entrar
-                    </button>
+                    {loading
+                        ? <div className="block w-full text-center uppercase bg-gray-900/70 py-2 px-4 shadow-xl font-semibold">
+                            <Spinner color="white" size="sm" />
+                        </div>
+                        : <button
+                            type="submit"
+                            className="block w-full text-center uppercase bg-gray-900/70 py-2 px-4 shadow-xl font-semibold"
+                            onClick={handleSubmit}
+                        >
+                            Entrar
+                        </button>}
                 </div>
             </form>
 
