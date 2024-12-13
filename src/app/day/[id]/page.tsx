@@ -134,16 +134,16 @@ export default async function Page({ params }: PageProps) {
                     Array.from(dayExerciseSet.entries()).map(([exercise, sets]) => (
                         <article className='bg-gray-800 text-white rounded-md px-4 py-8 my-12 mx-4 flex flex-col gap-4 relative overflow-visible shadow-xl' key={exercise.exercise_id}>
                             <div className='flex items-center'>
-
+                                <p className={`text-2xl font-bold`}>
+                                    {exercise.spanish_name}
+                                </p>
                             </div>
                             {sets.map(({ set, userSet }) => (
                                 <div className='flex justify-between bg-gray-700 py-1 px-4 rounded-md' key={set.exercise_set_id}>
                                     {/* Check button */}
                                     {/*<SetButton initialCompleted={userSet.is_completed} exerciseSetId={userSet.exercise_set_id} userId={userId} />*/}
                                     {/* Exercise name with conditional strikethrough */}
-                                    <p className={`text-2xl font-bold`}>
-                                        {exercise.spanish_name}
-                                    </p>
+
                                     <div className='flex flex-col items-center'>
                                         <p className='text-white/70 font-thin'>Series</p>
                                         <p>{set.quantity}</p>
